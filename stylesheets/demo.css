@@ -13,6 +13,25 @@ body
     left:100px;
 }
 
+.zhongqiu .rabbitlose
+{
+    position:absolute;
+    width:100px;
+    height:86px;
+    background:url(../images/rabbit-lose.png) no-repeat;   
+    left:100px;      
+}
+
+.zhongqiu .rabbitwin
+{
+    position:absolute;
+    width:100px;
+    height:80px;
+    background:url(../images/rabbit-win.png) no-repeat;     
+    left:100px;   
+}
+
+
 #rabbit1
 {
     top:50px;

@@ -13,6 +13,11 @@ define(function (require) {
         rabbitWinMap = ["0 0", "-198 0", "-401 0", "-609 0", "-816 0", "0 -96", "-208 -97", "-415 -97", "-623 -97", "-831 -97", "0 -203", "-207 -203", "-415 -203", "-623 -203", "-831 -203", "0 -307", "-206 -307", "-414 -307", "-623 -307"],
         rabbitLoseMap = ["0 0", "-163 0", "-327 0", "-491 0", "-655 0", "-819 0", "0 -135", "-166 -135", "-333 -135", "-500 -135", "-668 -135", "-835 -135", "0 -262"];
 
+    repeat();
+    run();
+    win();
+    lose();
+
     function repeat() {
         var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).repeat();
         repeatAnimation.start(80);
@@ -56,12 +61,13 @@ define(function (require) {
     }
 
     function win() {
-        var winAnimation;
-
+        var winAnimation = animation().changePosition($rabbit3, rabbitWinMap);
+        winAnimation.start(200);
     }
 
     function lose() {
-        var loseAnimation;
+        var loseAnimation = animation().changePosition($rabbit4, rabbitLoseMap);
+        loseAnimation.start(200);
     }
 
     function $(id) {
