@@ -42,6 +42,7 @@ define(function (require) {
                 if (left == finalLeft) {
                     right = false;
                     frame = 4;
+                    runAnimation.pasue().start(interval);
                 }
             } else {
                 position = leftRunningMap[frame].split(" ");
@@ -49,6 +50,7 @@ define(function (require) {
                 if (left == initLeft) {
                     right = true;
                     frame = 4;
+                    runAnimation.pasue().start(interval);
                 }
             }
             if (++frame == frameLength) {
