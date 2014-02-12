@@ -1,0 +1,34 @@
+body
+{
+    background:url(../images/bg.jpg) no-repeat center top; 
+    background-color:#fbf4d7;
+}
+
+.rabbit
+{
+    position:absolute;
+    height:80px;
+    width:102px;
+    background:url(../images/rabbit-big.png) no-repeat;  
+    left:100px;
+}
+
+#rabbit1
+{
+    top:50px;
+}
+
+#rabbit2
+{
+    top:200px;
+}
+
+#rabbit3
+{
+    top:350px;
+}
+
+#rabbit4
+{
+    top:500px;
+}
