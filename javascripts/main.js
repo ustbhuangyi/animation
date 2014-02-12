@@ -55,7 +55,7 @@ define(function (require) {
                 frame = 0;
             }
             $rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
-            $rabbit2.style.left = left;
+            $rabbit2.style.left = left + "px";
         }).repeat();
         runAnimation.start(interval);
     }
