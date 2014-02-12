@@ -57,7 +57,7 @@
                 ele.src = imglist[index];
             } : next, TIMELINE);
         },
-        wait: function (callback) {
+        then: function (callback) {
             return this._add(function (success) {
                 callback();
                 success();
