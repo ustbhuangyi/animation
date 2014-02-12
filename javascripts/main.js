@@ -65,6 +65,7 @@ define(function (require) {
     function win() {
         var winAnimation = animation().changePosition($rabbit3, rabbitWinMap).repeat(3).then(function () {
             console && console.log("win animation repeat 3 times and finished");
+            winAnimation.dispose();
         });
         winAnimation.start(200);
     }
@@ -72,6 +73,7 @@ define(function (require) {
     function lose() {
         var loseAnimation = animation().changePosition($rabbit4, rabbitLoseMap).then(function () {
             console && console.log("lose animation finished");
+            loseAnimation.dispose();
         });
         loseAnimation.start(200);
     }
