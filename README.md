@@ -25,7 +25,7 @@ var demoAnimation = animation().changePosition(ele, positions).repeat();
 * loadImage(imagelist)  //预加载图片
 * changePosition(ele,positions)  //通过改变元素的backgroud-position实现动画
 * changeSrc(ele,imglist) //通过改变元素的backgroud-position实现动画(一般这种方式需要和loadImage配合使用)
-* wait(callback) //动画执行完成后的回调函数
+* then(callback) //动画执行完成后的回调函数
 * enterFrame(callback) //每一帧动画执行的函数，相当于用户可以自定义每一帧动画的callback
 * repeat(times) //动画重复执行的次数，times为空时表示无限次
 * start(interval) //动画开始执行，interval表示动画执行的间隔
