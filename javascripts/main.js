@@ -29,7 +29,7 @@ define(function (require) {
             speed = 6,
             left, position,
             initLeft = 100,
-            finalLeft = 500,
+            finalLeft = 400,
             frame = 4,
             frameLength = 6,
             right = true;
