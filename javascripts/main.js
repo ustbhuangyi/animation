@@ -51,7 +51,7 @@ define(function (require) {
                     frame = 4;
                 }
             }
-            if (++frame == RUN_FRAME_LENGTH) {
+            if (++frame == frameLength) {
                 frame = 0;
             }
             $rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
