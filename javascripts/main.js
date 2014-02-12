@@ -34,7 +34,7 @@ define(function (require) {
             frameLength = 6,
             right = true;
 
-        var runAnimation = animation().enterframe(function (success, time) {
+        var runAnimation = animation().enterFrame(function (success, time) {
             var ratio = (time) / interval;
             if (right) {
                 position = rightRunningMap[frame].split(" ");
