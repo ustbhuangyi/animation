@@ -100,6 +100,7 @@
         pause: function () {
             this.state = STATE_STOP;
             this.timeline.stop();
+            return this;
         },
         dispose: function () {
             this.taskQueue = null;
@@ -155,5 +156,5 @@
     module.exports = function () {
         return new Animation();
     };
-    
+
 });
