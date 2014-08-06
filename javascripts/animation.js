@@ -1,11 +1,11 @@
 ﻿define(function (require, exports, module) {
     var Timeline = require("timeline"),
-    loadImage = require("imageloader");
+        loadImage = require("imageloader");
 
     var STATE_UNINITED = 0,
-    STATE_INITED = 1,
-    STATE_STOP = 2,
-    TIMELINE = 1;
+        STATE_INITED = 1,
+        STATE_STOP = 2,
+        TIMELINE = 1;
 
     function next(callback) {
         callback && callback();
@@ -29,32 +29,38 @@
         },
         changePosition: function (ele, positions) {
             var len = positions.length,
-            index = 0,
-            me = this;
+                index = 0,
+                last = false,
+                me = this;
             return this._add(len ? function (success, time) {
+                var position;
                 index = (time / me.interval) | 0;
-                if (index >= len) {
-                    index = 0;
+                last = index >= len - 1;
+                index = Math.min(index, len - 1);
+                //change posistions
+                position = positions[index].split(" ");
+                ele.style.backgroundPosition = position[0] + "px " + position[1] + "px";
+                if (last) {
                     success();
                     return;
                 }
-                //change posistions
-                var position = positions[index].split(" ");
-                ele.style.backgroundPosition = position[0] + "px " + position[1] + "px";
             } : next, TIMELINE);
         },
         changeSrc: function (ele, imglist) {
             var len = imglist.length,
-            index = 0,
-            me = this;
+                index = 0,
+                last = false,
+                me = this;
             return this._add(len ? function (success, time) {
                 index = (time / me.interval) | 0;
-                if (index >= len) {
-                    index = 0;
+                last = index >= len - 1;
+                index = Math.min(index, len - 1);
+                //change src
+                ele.src = imglist[index];
+                if (last) {
                     success();
                     return;
                 }
-                ele.src = imglist[index];
             } : next, TIMELINE);
         },
         then: function (callback) {
@@ -85,10 +91,11 @@
             });
         },
         start: function (interval) {
+            var queue;
             if (this.state == STATE_INITED)
                 return this;
             this.state = STATE_INITED;
-            var queue = this.taskQueue,
+            queue = this.taskQueue,
             len = queue.length;
             if (!len)
                 return this;
@@ -113,9 +120,8 @@
             return this;
         },
         _next: function () {
-            var me = this,
-            queue;
-            if (!this.taskQueue || me.state == STATE_STOP)
+            var queue;
+            if (!this.taskQueue || this.state == STATE_STOP)
                 return;
             if (this.index == this.taskQueue.length) {
                 this.dispose();
@@ -123,10 +129,10 @@
             }
             queue = this.taskQueue[this.index];
             if (queue.type == TIMELINE) {
-                me._enterframe(queue.task);
+                this._enterframe(queue.task);
             }
             else {
-                me._excuteTask(queue.task);
+                this._excuteTask(queue.task);
             }
         },
         _excuteTask: function (task) {
