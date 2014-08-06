@@ -33,11 +33,12 @@
                 last = false,
                 me = this;
             return this._add(len ? function (success, time) {
+                var position;
                 index = (time / me.interval) | 0;
                 last = index >= len - 1;
                 index = Math.min(index, len - 1);
                 //change posistions
-                var position = positions[index].split(" ");
+                position = positions[index].split(" ");
                 ele.style.backgroundPosition = position[0] + "px " + position[1] + "px";
                 if (last) {
                     success();
