@@ -1,4 +1,4 @@
-//³ÌÐòÈë¿Ú
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 define(function (require) {
 
     var animation = require("animation");
@@ -19,7 +19,7 @@ define(function (require) {
     lose();
 
     function repeat() {
-        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).repeat();
+        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).delay(5000).repeat();
         repeatAnimation.start(80);
 
     }
