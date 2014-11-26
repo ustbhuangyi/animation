@@ -58,9 +58,9 @@ define(function (require) {
             }
             $rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
             $rabbit2.style.left = left + "px";
-        }).repeat(6,{delay:1000}).delay(3000).changePosition($rabbit3, rabbitWinMap).repeat(3,{delay:2000}).delay(3000).changePosition($rabbit4, rabbitLoseMap).delay(3000).then(function () {
-                console.log("finish");
-            });
+        }).repeat(6, {delay: 1000}).delay(3000).changePosition($rabbit3, rabbitWinMap).repeat(3, {delay: 2000}).delay(3000).changePosition($rabbit4, rabbitLoseMap).delay(3000).then(function () {
+            console.log("finish");
+        });
         runAnimation.start(interval);
     }
 
