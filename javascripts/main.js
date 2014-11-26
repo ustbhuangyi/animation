@@ -58,7 +58,7 @@ define(function (require) {
             }
             $rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
             $rabbit2.style.left = left + "px";
-        }).wait(1000).repeat(6).wait(6000).changePosition($rabbit3, rabbitWinMap).wait(1000).repeat(3).wait(3000).changePosition($rabbit4, rabbitLoseMap).wait(3000).then(function () {
+        }).repeat(6).wait(6000).changePosition($rabbit3, rabbitWinMap).wait(1000).repeat(3).wait(3000).changePosition($rabbit4, rabbitLoseMap).wait(3000).then(function () {
             console.log("finish");
         });
         runAnimation.start(interval);
