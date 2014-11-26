@@ -94,7 +94,7 @@
                     doNext(opts && opts.delay);
                 }
 
-                function doNext(delay){
+                function doNext(delay) {
                     if (delay) {
                         setTimeout(function () {
                             me._next();
@@ -105,6 +105,9 @@
                     }
                 }
             });
+        },
+        repeatForever: function (opts) {
+            return this.repeat(null, opts);
         },
         start: function (interval) {
             var queue;
