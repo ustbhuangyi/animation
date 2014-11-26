@@ -19,7 +19,7 @@ define(function (require) {
     lose();
 
     function repeat() {
-        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).delay(2000).repeat();
+        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).delay(4000).repeat();
         repeatAnimation.start(80);
 
     }

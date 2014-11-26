@@ -150,7 +150,10 @@
         _excuteTask: function (task) {
             var me = this;
             task(function () {
-                var queue = me.taskQueue[me.index];
+                var queue;
+                if (!me.taskQueue)
+                    return;
+                queue = me.taskQueue[me.index];
                 me.index++;
                 queue.delay ? setTimeout(function () {
                     me._next();
@@ -166,7 +169,10 @@
 
             function enter(time) {
                 task(function () {
-                    var queue = me.taskQueue[me.index];
+                    var queue;
+                    if (!me.taskQueue)
+                        return;
+                    queue = me.taskQueue[me.index];
                     me.timeline.stop();
                     me.index++;
                     queue.delay ? setTimeout(function () {
