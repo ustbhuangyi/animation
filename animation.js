@@ -4,8 +4,9 @@
 
     var STATE_UNINITED = 0,
         STATE_INITED = 1,
-        STATE_STOP = 2,
-        TIMELINE = 1;
+        STATE_STOP = 2;
+
+    var TIMELINE = 1;
 
     function next(callback) {
         callback && callback();
@@ -76,7 +77,7 @@
             var me = this;
             return this._add(function () {
                 if (times) {
-                    if (! --times) {
+                    if (!--times) {
                         me.index++;
                     }
                     else {
@@ -96,7 +97,7 @@
                 return this;
             this.state = STATE_INITED;
             queue = this.taskQueue,
-            len = queue.length;
+                len = queue.length;
             if (!len)
                 return this;
             this.interval = interval;
@@ -107,6 +108,12 @@
         pause: function () {
             this.state = STATE_STOP;
             this.timeline.stop();
+            return this;
+        },
+        delay: function (time) {
+            if (this.taskQueue && this.taskQueue.length > 0) {
+                this.taskQueue[this.taskQueue.length - 1].delay = time;
+            }
             return this;
         },
         dispose: function () {
@@ -120,7 +127,8 @@
             return this;
         },
         _next: function () {
-            var queue;
+            var me = this,
+                queue;
             if (!this.taskQueue || this.state == STATE_STOP)
                 return;
             if (this.index == this.taskQueue.length) {
@@ -128,11 +136,14 @@
                 return;
             }
             queue = this.taskQueue[this.index];
-            if (queue.type == TIMELINE) {
-                this._enterframe(queue.task);
-            }
-            else {
-                this._excuteTask(queue.task);
+            queue.delay ? setTimeout(doNext, queue.delay) : doNext();
+            function doNext() {
+                if (queue.type == TIMELINE) {
+                    me._enterframe(queue.task);
+                }
+                else {
+                    me._excuteTask(queue.task);
+                }
             }
         },
         _excuteTask: function (task) {
