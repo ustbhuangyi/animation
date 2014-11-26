@@ -19,7 +19,7 @@ define(function (require) {
     lose();
 
     function repeat() {
-        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).delay(4000).repeat(3);
+        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).repeat(3,{delay:2000});
         repeatAnimation.start(80);
 
     }
@@ -42,7 +42,7 @@ define(function (require) {
                 if (left == finalLeft) {
                     right = false;
                     frame = 4;
-                    runAnimation.pause().start(interval);
+                    success();
                 }
             } else {
                 position = leftRunningMap[frame].split(" ");
@@ -50,7 +50,7 @@ define(function (require) {
                 if (left == initLeft) {
                     right = true;
                     frame = 4;
-                    runAnimation.pause().start(interval);
+                    success();
                 }
             }
             if (++frame == frameLength) {
