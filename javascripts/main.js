@@ -19,7 +19,7 @@ define(function (require) {
     lose();
 
     function repeat() {
-        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).delay(4000).repeat();
+        var repeatAnimation = animation().changePosition($rabbit1, rightRunningMap).delay(4000).repeat(3);
         repeatAnimation.start(80);
 
     }
@@ -58,7 +58,9 @@ define(function (require) {
             }
             $rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
             $rabbit2.style.left = left + "px";
-        }).repeat();
+        }).repeat(6, {delay: 1000}).delay(3000).changePosition($rabbit2, rabbitWinMap).repeat(3, {delay: 1000}).delay(3000).changePosition($rabbit2, rabbitLoseMap).backgroundPosition.then(function () {
+                console.log("finish");
+            });
         runAnimation.start(interval);
     }
 

@@ -73,10 +73,9 @@
         enterFrame: function (callback) {
             return this._add(callback, TIMELINE);
         },
-        repeat: function (times) {
+        repeat: function (times, opts) {
             var me = this;
             return this._add(function () {
-                var queue = me.taskQueue[me.index];
                 if (times) {
                     if (!--times) {
                         me.index++;
@@ -84,15 +83,22 @@
                     else {
                         me.index--;
                     }
-                    queue.delay ? setTimeout(function () {
-                        me._next();
-                    }, queue.delay) : me._next();
+                    doNext();
                 }
                 else {
                     me.index--;
-                    queue.delay ? setTimeout(function () {
+                    doNext();
+                }
+
+                function doNext(){
+                    if (opts && opts.delay) {
+                        setTimeout(function () {
+                            me._next();
+                        }, opts.delay);
+                    }
+                    else {
                         me._next();
-                    }, queue.delay) : me._next();
+                    }
                 }
             });
         },
