@@ -76,25 +76,29 @@
         repeat: function (times, opts) {
             var me = this;
             return this._add(function () {
+                var queue;
                 if (times) {
                     if (!--times) {
+                        queue = me.taskQueue[me.index];
                         me.index++;
+                        doNext(queue && queue.delay);
                     }
                     else {
                         me.index--;
+                        doNext(opts && opts.delay);
                     }
-                    doNext();
+
                 }
                 else {
                     me.index--;
-                    doNext();
+                    doNext(opts && opts.delay);
                 }
 
-                function doNext(){
-                    if (opts && opts.delay) {
+                function doNext(delay){
+                    if (delay) {
                         setTimeout(function () {
                             me._next();
-                        }, opts.delay);
+                        }, delay);
                     }
                     else {
                         me._next();
