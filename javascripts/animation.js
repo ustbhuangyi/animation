@@ -81,7 +81,7 @@
                     if (!--times) {
                         queue = me.taskQueue[me.index];
                         me.index++;
-                        doNext(queue && queue.delay);
+                        doNext(queue && queue.wait);
                     }
                     else {
                         me.index--;
@@ -128,9 +128,9 @@
             this.timeline.stop();
             return this;
         },
-        delay: function (time) {
+        wait: function (time) {
             if (this.taskQueue && this.taskQueue.length > 0) {
-                this.taskQueue[this.taskQueue.length - 1].delay = time;
+                this.taskQueue[this.taskQueue.length - 1].wait = time;
             }
             return this;
         },
@@ -168,9 +168,9 @@
                     return;
                 queue = me.taskQueue[me.index];
                 me.index++;
-                queue.delay ? setTimeout(function () {
+                queue.wait ? setTimeout(function () {
                     me._next();
-                }, queue.delay) : me._next();
+                }, queue.wait) : me._next();
 
             });
         },
@@ -188,9 +188,9 @@
                     queue = me.taskQueue[me.index];
                     me.timeline.stop();
                     me.index++;
-                    queue.delay ? setTimeout(function () {
+                    queue.wait ? setTimeout(function () {
                         me._next();
-                    }, queue.delay) : me._next();
+                    }, queue.wait) : me._next();
                 }, time);
             }
         },
