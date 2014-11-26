@@ -8,7 +8,7 @@
 
     var TIMELINE = 1;
 
-    function next(callback) {
+    function nextnext(callback) {
         callback && callback();
     }
 
@@ -76,6 +76,7 @@
         repeat: function (times) {
             var me = this;
             return this._add(function () {
+                var queue = me.taskQueue[me.index];
                 if (times) {
                     if (!--times) {
                         me.index++;
@@ -83,11 +84,15 @@
                     else {
                         me.index--;
                     }
-                    me._next();
+                    queue.delay ? setTimeout(function () {
+                        me._next();
+                    }, queue.delay) : me._next();
                 }
                 else {
                     me.index--;
-                    me._next();
+                    queue.delay ? setTimeout(function () {
+                        me._next();
+                    }, queue.delay) : me._next();
                 }
             });
         },
@@ -127,8 +132,7 @@
             return this;
         },
         _next: function () {
-            var me = this,
-                queue;
+            var queue;
             if (!this.taskQueue || this.state == STATE_STOP)
                 return;
             if (this.index == this.taskQueue.length) {
@@ -136,21 +140,22 @@
                 return;
             }
             queue = this.taskQueue[this.index];
-            queue.delay ? setTimeout(doNext, queue.delay) : doNext();
-            function doNext() {
-                if (queue.type == TIMELINE) {
-                    me._enterframe(queue.task);
-                }
-                else {
-                    me._excuteTask(queue.task);
-                }
+            if (queue.type == TIMELINE) {
+                this._enterframe(queue.task);
+            }
+            else {
+                this._excuteTask(queue.task);
             }
         },
         _excuteTask: function (task) {
             var me = this;
             task(function () {
+                var queue = me.taskQueue[me.index];
                 me.index++;
-                me._next();
+                queue.delay ? setTimeout(function () {
+                    me._next();
+                }, queue.delay) : me._next();
+
             });
         },
         _enterframe: function (task) {
@@ -161,9 +166,12 @@
 
             function enter(time) {
                 task(function () {
+                    var queue = me.taskQueue[me.index];
                     me.timeline.stop();
                     me.index++;
-                    me._next();
+                    queue.delay ? setTimeout(function () {
+                        me._next();
+                    }, queue.delay) : me._next();
                 }, time);
             }
         },
