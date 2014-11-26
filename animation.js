@@ -8,7 +8,7 @@
 
     var TIMELINE = 1;
 
-    function next(callback) {
+    function nextnext(callback) {
         callback && callback();
     }
 
@@ -73,23 +73,41 @@
         enterFrame: function (callback) {
             return this._add(callback, TIMELINE);
         },
-        repeat: function (times) {
+        repeat: function (times, opts) {
             var me = this;
             return this._add(function () {
+                var queue;
                 if (times) {
                     if (!--times) {
+                        queue = me.taskQueue[me.index];
                         me.index++;
+                        doNext(queue && queue.wait);
                     }
                     else {
                         me.index--;
+                        doNext(opts && opts.delay);
                     }
-                    me._next();
+
                 }
                 else {
                     me.index--;
-                    me._next();
+                    doNext(opts && opts.delay);
+                }
+
+                function doNext(delay) {
+                    if (delay) {
+                        setTimeout(function () {
+                            me._next();
+                        }, delay);
+                    }
+                    else {
+                        me._next();
+                    }
                 }
             });
+        },
+        repeatForever: function (opts) {
+            return this.repeat(null, opts);
         },
         start: function (interval) {
             var queue;
@@ -110,9 +128,9 @@
             this.timeline.stop();
             return this;
         },
-        delay: function (time) {
+        wait: function (time) {
             if (this.taskQueue && this.taskQueue.length > 0) {
-                this.taskQueue[this.taskQueue.length - 1].delay = time;
+                this.taskQueue[this.taskQueue.length - 1].wait = time;
             }
             return this;
         },
@@ -127,8 +145,7 @@
             return this;
         },
         _next: function () {
-            var me = this,
-                queue;
+            var queue;
             if (!this.taskQueue || this.state == STATE_STOP)
                 return;
             if (this.index == this.taskQueue.length) {
@@ -136,21 +153,25 @@
                 return;
             }
             queue = this.taskQueue[this.index];
-            queue.delay ? setTimeout(doNext, queue.delay) : doNext();
-            function doNext() {
-                if (queue.type == TIMELINE) {
-                    me._enterframe(queue.task);
-                }
-                else {
-                    me._excuteTask(queue.task);
-                }
+            if (queue.type == TIMELINE) {
+                this._enterframe(queue.task);
+            }
+            else {
+                this._excuteTask(queue.task);
             }
         },
         _excuteTask: function (task) {
             var me = this;
             task(function () {
+                var queue;
+                if (!me.taskQueue)
+                    return;
+                queue = me.taskQueue[me.index];
                 me.index++;
-                me._next();
+                queue.wait ? setTimeout(function () {
+                    me._next();
+                }, queue.wait) : me._next();
+
             });
         },
         _enterframe: function (task) {
@@ -161,9 +182,15 @@
 
             function enter(time) {
                 task(function () {
+                    var queue;
+                    if (!me.taskQueue)
+                        return;
+                    queue = me.taskQueue[me.index];
                     me.timeline.stop();
                     me.index++;
-                    me._next();
+                    queue.wait ? setTimeout(function () {
+                        me._next();
+                    }, queue.wait) : me._next();
                 }, time);
             }
         },
