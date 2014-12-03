@@ -28,6 +28,8 @@ var demoAnimation = animation().changePosition(ele, positions).repeat();
 * then(callback) //动画执行完成后的回调函数
 * enterFrame(callback) //每一帧动画执行的函数，相当于用户可以自定义每一帧动画的callback
 * repeat(times) //动画重复执行的次数，times为空时表示无限次
+* repeatForever() //无限重复上一次动画, 相当于repeat()，更友好的一个接口吧
+* wait(time) //每个动画执行完后等待的时间
 * start(interval) //动画开始执行，interval表示动画执行的间隔
 * pause() //动画暂停
 * dispose() //释放资源
