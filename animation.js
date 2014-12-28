@@ -8,7 +8,7 @@
 
     var TIMELINE = 1;
 
-    function nextnext(callback) {
+    function next(callback) {
         callback && callback();
     }
 
