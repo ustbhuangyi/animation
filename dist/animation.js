@@ -1,8 +1,4 @@
-define('timeline', [
-    'require',
-    'exports',
-    'module'
-], function (require, exports, module) {
+define('timeline', [], function () {
     var requestAnimationFrame, cancelAnimationFrame, DEFAULT_INTERVAL = 1000 / 60;
     function Timeline() {
         this.animationHandler = 0;
@@ -11,7 +7,26 @@ define('timeline', [
     };
     Timeline.prototype.start = function (interval) {
         var startTime = +new Date(), me = this, lastTick = 0;
-        interval = interval || DEFAULT_INTERVAL;
+        me.interval = interval || DEFAULT_INTERVAL;
+        me.startTime = startTime;
+        me.stop();
+        nextTick();
+        function nextTick() {
+            var now = +new Date();
+            me.animationHandler = requestAnimationFrame(nextTick);
+            if (now - lastTick >= me.interval) {
+                me.onenterframe(now - startTime);
+                lastTick = now;
+            }
+        }
+    };
+    Timeline.prototype.restart = function () {
+        var me = this, lastTick = 0, interval, startTime;
+        if (!me.dur || !me.interval)
+            return;
+        interval = me.interval;
+        startTime = +new Date() - me.dur;
+        me.startTime = startTime;
         me.stop();
         nextTick();
         function nextTick() {
@@ -24,6 +39,9 @@ define('timeline', [
         }
     };
     Timeline.prototype.stop = function () {
+        if (this.startTime) {
+            this.dur = +new Date() - this.startTime;
+        }
         cancelAnimationFrame(this.animationHandler);
     };
     requestAnimationFrame = function () {
@@ -36,13 +54,9 @@ define('timeline', [
             window.clearTimeout(id);
         };
     }();
-    module.exports = Timeline;
+    return Timeline;
 });
-define('imageloader', [
-    'require',
-    'exports',
-    'module'
-], function (require, exports, module) {
+define('imageloader', [], function () {
     var __id = 0;
     function getId() {
         return ++__id;
@@ -102,16 +116,12 @@ define('imageloader', [
             callback(false);
         }
     }
-    module.exports = loadImage;
+    return loadImage;
 });
 define('animation', [
-    'require',
-    'exports',
-    'module',
     'timeline',
     'imageloader'
-], function (require, exports, module) {
-    var Timeline = require('timeline'), loadImage = require('imageloader');
+], function (Timeline, loadImage) {
     var STATE_UNINITED = 0, STATE_INITED = 1, STATE_STOP = 2;
     var TIMELINE = 1;
     function next(callback) {
@@ -275,7 +285,7 @@ define('animation', [
         },
         constructor: Animation
     };
-    module.exports = function () {
+    return function () {
         return new Animation();
     };
 });

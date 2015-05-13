@@ -1,4 +1,4 @@
-define(function (require, exports, module) {
+define(function () {
     var __id = 0;
 
     function getId() {
@@ -79,5 +79,5 @@ define(function (require, exports, module) {
         }
     }
 
-   module.exports = loadImage;
+    return loadImage;
 });
