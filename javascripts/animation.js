@@ -7,7 +7,26 @@ define('timeline', [], function () {
     };
     Timeline.prototype.start = function (interval) {
         var startTime = +new Date(), me = this, lastTick = 0;
-        interval = interval || DEFAULT_INTERVAL;
+        me.interval = interval || DEFAULT_INTERVAL;
+        me.startTime = startTime;
+        me.stop();
+        nextTick();
+        function nextTick() {
+            var now = +new Date();
+            me.animationHandler = requestAnimationFrame(nextTick);
+            if (now - lastTick >= me.interval) {
+                me.onenterframe(now - startTime);
+                lastTick = now;
+            }
+        }
+    };
+    Timeline.prototype.restart = function () {
+        var me = this, lastTick = 0, interval, startTime;
+        if (!me.dur || !me.interval)
+            return;
+        interval = me.interval;
+        startTime = +new Date() - me.dur;
+        me.startTime = startTime;
         me.stop();
         nextTick();
         function nextTick() {
@@ -20,6 +39,9 @@ define('timeline', [], function () {
         }
     };
     Timeline.prototype.stop = function () {
+        if (this.startTime) {
+            this.dur = +new Date() - this.startTime;
+        }
         cancelAnimationFrame(this.animationHandler);
     };
     requestAnimationFrame = function () {
