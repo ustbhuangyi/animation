@@ -1,0 +1,9 @@
+{
+  "name": "animation",
+  "version": "0.0.1",
+  "devDependencies": {
+    "gulp": "^3.8.1",
+    "gulp-concat": "^2.3.4",
+    "amd-optimize": "^0.4.3"
+  }
+}
