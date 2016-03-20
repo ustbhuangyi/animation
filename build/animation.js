@@ -11,76 +11,79 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/*!**************************!*\
+  !*** ./src/animation.js ***!
+  \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	var Timeline = __webpack_require__(1);
-	var loadImage = __webpack_require__(2);
-
+	
+	var Timeline = __webpack_require__(/*! ./timeline */ 1);
+	var loadImage = __webpack_require__(/*! ./imageloader */ 2);
+	
 	var STATE_UNINITED = 0;
 	var STATE_INITED = 1;
 	var STATE_STOP = 2;
-
+	
 	var SYNC = 0;
 	var TIMELINE = 1;
-
-
+	
+	
 	function next(callback) {
 		callback && callback();
 	}
-
+	
 	function Animation() {
 		this.taskQueue = [];
 		this.timeline = new Timeline();
 		this.state = STATE_UNINITED;
 		this.index = 0;
 	}
-
+	
 	Animation.prototype = {
 		loadImage: function (imglist) {
-
+	
 			return this._add(function (success) {
 				loadImage(imglist.slice(), success);
 				imglist = null;
@@ -151,7 +154,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					me.index--;
 					me._next();
 				}
-
+	
 			}, SYNC);
 		},
 		repeatForever: function () {
@@ -168,7 +171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			this.interval = interval;
 			this._next();
 			return this;
-
+	
 		},
 		pause: function () {
 			this.state = STATE_STOP;
@@ -216,15 +219,15 @@ return /******/ (function(modules) { // webpackBootstrap
 				queue.wait ? setTimeout(function () {
 					me._next();
 				}, queue.wait) : me._next();
-
+	
 			});
 		},
 		_enterframe: function (task) {
 			var me = this;
-
+	
 			this.timeline.onenterframe = enter;
 			this.timeline.start(this.interval);
-
+	
 			function enter(time) {
 				task(function () {
 					if (!me.taskQueue)
@@ -240,55 +243,58 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		constructor: Animation
 	};
-
+	
 	module.exports = function () {
 		return new Animation();
 	};
-
+	
 
 
 /***/ },
 /* 1 */
+/*!*************************!*\
+  !*** ./src/timeline.js ***!
+  \*************************/
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	var requestAnimationFrame,
 		cancelAnimationFrame,
 		startTimeline,
 		DEFAULT_INTERVAL = 1000 / 60;
-
+	
 	function Timeline() {
 		this.animationHandler = 0;
 	}
-
+	
 	Timeline.prototype.onenterframe = function (time) {
 		// body...
 	};
-
+	
 	Timeline.prototype.start = function (interval) {
 		var me = this;
 		me.interval = interval || DEFAULT_INTERVAL;
 		startTimeline(me, +new Date())
 	};
-
+	
 	Timeline.prototype.restart = function () {
 		// body...
 		var me = this;
-
+	
 		if (!me.dur || !me.interval) return;
-
+	
 		me.stop();
 		startTimeline(me, +new Date() - me.dur);
 	};
-
+	
 	Timeline.prototype.stop = function () {
 		if (this.startTime) {
 			this.dur = +new Date() - this.startTime;
 		}
 		cancelAnimationFrame(this.animationHandler);
 	};
-
+	
 	requestAnimationFrame = (function () {
 		return window.requestAnimationFrame ||
 			window.webkitRequestAnimationFrame ||
@@ -299,7 +305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				return window.setTimeout(callback, (callback.interval || DEFAULT_INTERVAL) / 2); // make interval as precise as possible.
 			};
 	})();
-
+	
 	// handle multiple browsers for cancelAnimationFrame()
 	cancelAnimationFrame = (function () {
 		return window.cancelAnimationFrame ||
@@ -310,114 +316,157 @@ return /******/ (function(modules) { // webpackBootstrap
 				window.clearTimeout(id);
 			};
 	})();
-
+	
 	startTimeline = function(timeline, startTime) {
 		var lastTick = +new Date();
-
+	
 		timeline.startTime = startTime;
 		nextTick.interval = timeline.interval;
 		nextTick();
-
+	
 		function nextTick() {
 			var now = +new Date();
-
+	
 			timeline.animationHandler = requestAnimationFrame(nextTick);
-
+	
 			if (now - lastTick >= timeline.interval) {
 				timeline.onenterframe(now - startTime);
 				lastTick = now;
 			}
 		}
 	};
-
+	
 	module.exports = Timeline;
 
 /***/ },
 /* 2 */
+/*!****************************!*\
+  !*** ./src/imageloader.js ***!
+  \****************************/
 /***/ function(module, exports) {
 
 	'use strict';
-
+	
 	var __id = 0;
-
+	
+	/**
+	 * 动态创建id
+	 * @returns {number}
+	 */
 	function getId() {
 		return ++__id;
 	}
-
+	
+	/**
+	 * 预加载图片函数
+	 * @param images 加载的图片数组或对象
+	 * @param callback 全部图片加载完毕后调用的回调函数
+	 * @param timeout 加载超时的时长
+	 */
 	function loadImage(images, callback, timeout) {
-		var key, item, count, success, timeoutId, isTimeout;
-
-		count = 0;
-		success = true;
-		isTimeout = false;
-		for (key in images) {
+		//加载完成图片的计数器
+		var count = 0;
+		//全部图片成功加载完图片的标志位
+		var success = true;
+		//超时timer的id
+		var timeoutId = 0;
+		//是否加载超时的标志位
+		var isTimeout = false;
+		//对图片数组（或对象）进行遍历
+		for (var key in images) {
+			//过滤掉prototype的属性
 			if (!images.hasOwnProperty(key))
 				continue;
-			item = images[key];
-
-			if (typeof (item) == 'string') {
+			//获得每个图片元素
+			//期望格式是个object： {src:xxx}
+			var item = images[key];
+	
+			// 如果item是个字符传，则构造object
+			if (typeof item === 'string') {
 				item = images[key] = {
 					src: item
 				};
 			}
-
+	
+			//如果格式不满足期望，则丢弃此条数据进行下一次遍历
 			if (!item || !item.src)
 				continue;
-
+	
+			//计数+1
 			count++;
+			//设置图片元素的id
 			item.id = "__img_" + key + getId();
+			//设置图片元素的img，是一个Image对象
 			item.img = window[item.id] = new Image();
-
+	
 			doLoad(item);
 		}
-
+	
+		//遍历完成如果计数为0，则直接调用
 		if (!count) {
 			callback(success);
-		} else if (timeout) {
+		}
+		//如果设置了加载时长，则设置超时函数计时器
+		else if (timeout) {
 			timeoutId = setTimeout(onTimeout, timeout);
 		}
-
+	
+		/**
+		 * 真正进行图片加载的函数
+		 * @param item 图片元素对象
+		 */
 		function doLoad(item) {
-			var img = item.img,
-				id = item.id;
-
 			item.status = "loading";
-
+	
+			var img = item.img;
+			//定义图片加载成功的回调函数
 			img.onload = function () {
+				//如果每张图片都成功才算成功
 				success = success && true;
 				item.status = "loaded";
 				done();
 			};
 			img.onerror = function () {
+				//若有一张图片加载失败，则为失败
 				success = false;
 				item.status = "error";
 				done();
 			};
+			//发起一个http(s)请求加载图片
 			img.src = item.src;
-
+	
+			/**
+			 * 每张图片加载完成的回调函数
+			 */
 			function done() {
+				//事件清理
 				img.onload = img.onerror = null;
-
+	
 				try {
-					//IE doesn't support this
-					delete window[id];
+					//删除window上注册的属性
+					delete window[item.id];
 				}
 				catch (e) {
-
+	
 				}
+				//每张图片加载完成，计数器减一，当所有图片加载完毕且没有超时的情况下，
+				//清除超时计时器，且执行回调函数
 				if (!--count && !isTimeout) {
 					clearTimeout(timeoutId);
 					callback(success);
 				}
 			}
 		}
-
+	
+		/**
+		 * 超时函数
+		 */
 		function onTimeout() {
 			isTimeout = true;
 			callback(false);
 		}
 	}
-
+	
 	module.exports = loadImage;
 
 
@@ -425,3 +474,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
+//# sourceMappingURL=animation.js.map
