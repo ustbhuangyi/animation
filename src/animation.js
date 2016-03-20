@@ -7,7 +7,9 @@ var STATE_UNINITED = 0;
 var STATE_INITED = 1;
 var STATE_STOP = 2;
 
+var SYNC = 0;
 var TIMELINE = 1;
+
 
 function next(callback) {
 	callback && callback();
@@ -26,7 +28,7 @@ Animation.prototype = {
 		return this._add(function (success) {
 			loadImage(imglist.slice(), success);
 			imglist = null;
-		});
+		}, SYNC);
 	},
 	changePosition: function (ele, positions) {
 		var len = positions.length,
@@ -68,7 +70,7 @@ Animation.prototype = {
 		return this._add(function (success) {
 			callback();
 			success();
-		});
+		}, SYNC);
 	},
 	enterFrame: function (callback) {
 		return this._add(callback, TIMELINE);
@@ -76,10 +78,9 @@ Animation.prototype = {
 	repeat: function (times) {
 		var me = this;
 		return this._add(function () {
-			var queue;
 			if (times) {
 				if (!--times) {
-					queue = me.taskQueue[me.index];
+					var queue = me.taskQueue[me.index];
 					me.index++;
 					queue.wait ? setTimeout(function () {
 						me._next();
@@ -95,7 +96,7 @@ Animation.prototype = {
 				me._next();
 			}
 
-		});
+		}, SYNC);
 	},
 	repeatForever: function () {
 		return this.repeat();
@@ -152,10 +153,9 @@ Animation.prototype = {
 	_excuteTask: function (task) {
 		var me = this;
 		task(function () {
-			var queue;
 			if (!me.taskQueue)
 				return;
-			queue = me.taskQueue[me.index];
+			var queue = me.taskQueue[me.index];
 			me.index++;
 			queue.wait ? setTimeout(function () {
 				me._next();
@@ -171,10 +171,9 @@ Animation.prototype = {
 
 		function enter(time) {
 			task(function () {
-				var queue;
 				if (!me.taskQueue)
 					return;
-				queue = me.taskQueue[me.index];
+				var queue = me.taskQueue[me.index];
 				me.timeline.stop();
 				me.index++;
 				queue.wait ? setTimeout(function () {
