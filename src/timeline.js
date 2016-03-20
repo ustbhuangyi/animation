@@ -1,93 +1,80 @@
-define(function () {
-  var requestAnimationFrame,
-    cancelAnimationFrame,
-    DEFAULT_INTERVAL = 1000 / 60;
+'use strict';
 
-  function Timeline() {
-    this.animationHandler = 0;
-  }
+var requestAnimationFrame,
+	cancelAnimationFrame,
+	startTimeline,
+	DEFAULT_INTERVAL = 1000 / 60;
 
-  Timeline.prototype.onenterframe = function (time) {
-    // body...
-  };
+function Timeline() {
+	this.animationHandler = 0;
+}
 
-  Timeline.prototype.start = function (interval) {
-    var startTime = +new Date(),
-      me = this,
-      lastTick = 0;
-    me.interval = interval || DEFAULT_INTERVAL;
-    //this.onenterframe(new Date - startTime);
-    me.startTime = startTime;
-    me.stop();
-    nextTick();
+Timeline.prototype.onenterframe = function (time) {
+	// body...
+};
 
-    function nextTick() {
-      var now = +new Date();
+Timeline.prototype.start = function (interval) {
+	var me = this;
+	me.interval = interval || DEFAULT_INTERVAL;
+	startTimeline(me, +new Date())
+};
 
-      me.animationHandler = requestAnimationFrame(nextTick);
+Timeline.prototype.restart = function () {
+	// body...
+	var me = this;
 
-      if (now - lastTick >= me.interval) {
-        me.onenterframe(now - startTime);
-        lastTick = now;
-      }
-    }
-  };
+	if (!me.dur || !me.interval) return;
 
-  Timeline.prototype.restart = function () {
-    // body...
-    var me = this,
-      lastTick = 0, interval, startTime;
+	me.stop();
+	startTimeline(me, +new Date() - me.dur);
+};
 
-    if (!me.dur || !me.interval) return;
+Timeline.prototype.stop = function () {
+	if (this.startTime) {
+		this.dur = +new Date() - this.startTime;
+	}
+	cancelAnimationFrame(this.animationHandler);
+};
 
-    interval = me.interval;
-    startTime = +new Date() - me.dur;
+requestAnimationFrame = (function () {
+	return window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+			// if all else fails, use setTimeout
+		function (callback) {
+			return window.setTimeout(callback, (callback.interval || DEFAULT_INTERVAL) / 2); // make interval as precise as possible.
+		};
+})();
 
-    me.startTime = startTime;
-    me.stop();
-    nextTick();
+// handle multiple browsers for cancelAnimationFrame()
+cancelAnimationFrame = (function () {
+	return window.cancelAnimationFrame ||
+		window.webkitCancelAnimationFrame ||
+		window.mozCancelAnimationFrame ||
+		window.oCancelAnimationFrame ||
+		function (id) {
+			window.clearTimeout(id);
+		};
+})();
 
-    function nextTick() {
-      var now = +new Date();
+startTimeline = function(timeline, startTime) {
+	var lastTick = +new Date();
 
-      me.animationHandler = requestAnimationFrame(nextTick);
+	timeline.startTime = startTime;
+	nextTick.interval = timeline.interval;
+	nextTick();
 
-      if (now - lastTick >= interval) {
-        me.onenterframe(now - startTime);
-        lastTick = now;
-      }
-    }
-  };
+	function nextTick() {
+		var now = +new Date();
 
-  Timeline.prototype.stop = function () {
-    if (this.startTime) {
-      this.dur = +new Date() - this.startTime;
-    }
-    cancelAnimationFrame(this.animationHandler);
-  };
+		timeline.animationHandler = requestAnimationFrame(nextTick);
 
-  requestAnimationFrame = (function () {
-    return window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.oRequestAnimationFrame ||
-        // if all else fails, use setTimeout
-      function (callback) {
-        return window.setTimeout(callback, 1000 / 60); // shoot for 60 fps
-      };
-  })();
+		if (now - lastTick >= timeline.interval) {
+			timeline.onenterframe(now - startTime);
+			lastTick = now;
+		}
+	}
+};
 
-  // handle multiple browsers for cancelAnimationFrame()
-  cancelAnimationFrame = (function () {
-    return window.cancelAnimationFrame ||
-      window.webkitCancelAnimationFrame ||
-      window.mozCancelAnimationFrame ||
-      window.oCancelAnimationFrame ||
-      function (id) {
-        window.clearTimeout(id);
-      };
-  })();
-
-
-  return Timeline;
-});
+module.exports = Timeline;

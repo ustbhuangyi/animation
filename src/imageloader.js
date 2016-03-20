@@ -1,83 +1,83 @@
-define(function () {
-    var __id = 0;
+'use strict';
 
-    function getId() {
-        return ++__id;
-    }
+var __id = 0;
 
-    function loadImage(images, callback, timeout) {
-        var key, item, count, success, timeoutId, isTimeout;
+function getId() {
+	return ++__id;
+}
 
-        count = 0;
-        success = true;
-        isTimeout = false;
-        for (key in images) {
-            if (!images.hasOwnProperty(key))
-                continue;
-            item = images[key];
+function loadImage(images, callback, timeout) {
+	var key, item, count, success, timeoutId, isTimeout;
 
-            if (typeof (item) == 'string') {
-                item = images[key] = {
-                    src: item
-                };
-            }
+	count = 0;
+	success = true;
+	isTimeout = false;
+	for (key in images) {
+		if (!images.hasOwnProperty(key))
+			continue;
+		item = images[key];
 
-            if (!item || !item.src)
-                continue;
+		if (typeof (item) == 'string') {
+			item = images[key] = {
+				src: item
+			};
+		}
 
-            count++;
-            item.id = "__img_" + key + getId();
-            item.img = window[item.id] = new Image();
+		if (!item || !item.src)
+			continue;
 
-            doLoad(item);
-        }
+		count++;
+		item.id = "__img_" + key + getId();
+		item.img = window[item.id] = new Image();
 
-        if (!count) {
-            callback(success);
-        } else if (timeout) {
-            timeoutId = setTimeout(onTimeout, timeout);
-        }
+		doLoad(item);
+	}
 
-        function doLoad(item) {
-            var img = item.img,
-            id = item.id;
+	if (!count) {
+		callback(success);
+	} else if (timeout) {
+		timeoutId = setTimeout(onTimeout, timeout);
+	}
 
-            item.status = "loading";
+	function doLoad(item) {
+		var img = item.img,
+			id = item.id;
 
-            img.onload = function () {
-                success = success && true;
-                item.status = "loaded";
-                done();
-            };
-            img.onerror = function () {
-                success = false;
-                item.status = "error";
-                done();
-            };
-            img.src = item.src;
+		item.status = "loading";
 
-            function done() {
-                img.onload = img.onerror = null;
+		img.onload = function () {
+			success = success && true;
+			item.status = "loaded";
+			done();
+		};
+		img.onerror = function () {
+			success = false;
+			item.status = "error";
+			done();
+		};
+		img.src = item.src;
 
-                try {
-                    //IE doesn't support this
-                    delete window[id];
-                }
-                catch (e) {
+		function done() {
+			img.onload = img.onerror = null;
 
-                }
-                if (! --count && !isTimeout) {
-                    clearTimeout(timeoutId);
-                    callback(success);
-                }
-            }
-        }
+			try {
+				//IE doesn't support this
+				delete window[id];
+			}
+			catch (e) {
 
-        function onTimeout() {
-            isTimeout = true;
-            callback(false);
-        }
-    }
+			}
+			if (!--count && !isTimeout) {
+				clearTimeout(timeoutId);
+				callback(success);
+			}
+		}
+	}
 
-    return loadImage;
-});
+	function onTimeout() {
+		isTimeout = true;
+		callback(false);
+	}
+}
+
+module.exports = loadImage;

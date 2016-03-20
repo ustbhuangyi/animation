@@ -1,9 +1,21 @@
 {
   "name": "animation",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "description": "a common animation lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ustbhuangyi/animation.git"
+  },
+  "keywords": [
+    "common",
+    "animation"
+  ],
+  "author": "ustbhuangyi",
+  "license": "MIT",
   "devDependencies": {
-    "gulp": "^3.8.1",
-    "gulp-concat": "^2.3.4",
-    "amd-optimize": "^0.4.3"
+    "webpack": "^1.12.11"
   }
 }
