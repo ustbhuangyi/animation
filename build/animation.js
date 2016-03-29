@@ -89,7 +89,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				imglist = null;
 			}, SYNC);
 		},
-		changePosition: function (ele, positions) {
+		changePosition: function (ele, positions, imgUrl) {
 			var len = positions.length,
 				index = 0,
 				last = false,
@@ -101,6 +101,9 @@ return /******/ (function(modules) { // webpackBootstrap
 				index = Math.min(index, len - 1);
 				//change posistions
 				position = positions[index].split(" ");
+				if (imgUrl) {
+					ele.style.backgroundImage = 'url(' + imgUrl + ')';
+				}
 				ele.style.backgroundPosition = position[0] + "px " + position[1] + "px";
 				if (last) {
 					success();

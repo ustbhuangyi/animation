@@ -59,7 +59,7 @@ function run() {
 		}
 		$rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
 		$rabbit2.style.left = left + "px";
-	}).wait(1000).repeat(4).then(function () {
+	}).wait(1000).changePosition($rabbit2, rabbitWinMap, images[2]).then(function () {
 		console.log("finish");
 	});
 	runAnimation.start(interval);
