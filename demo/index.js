@@ -23,6 +23,17 @@ function repeat() {
 	var repeatAnimation = animation().loadImage(images).changePosition($rabbit1, rightRunningMap).repeatForever();
 	repeatAnimation.start(80);
 
+	var running = true;
+	$rabbit1.addEventListener('click', function () {
+		if (running) {
+			running = false;
+			repeatAnimation.pause();
+		} else {
+			running = true;
+			repeatAnimation.restart();
+		}
+	});
+
 }
 
 function run() {
@@ -44,6 +55,7 @@ function run() {
 				right = false;
 				frame = 4;
 				success();
+				return;
 			}
 		} else {
 			position = leftRunningMap[frame].split(" ");
@@ -52,6 +64,7 @@ function run() {
 				right = true;
 				frame = 4;
 				success();
+				return;
 			}
 		}
 		if (++frame == frameLength) {
@@ -59,7 +72,7 @@ function run() {
 		}
 		$rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
 		$rabbit2.style.left = left + "px";
-	}).wait(1000).changePosition($rabbit2, rabbitWinMap, images[2]).then(function () {
+	}).repeat(1).wait(1000).changePosition($rabbit2, rabbitWinMap, images[2]).then(function () {
 		console.log("finish");
 	});
 	runAnimation.start(interval);

@@ -32,6 +32,7 @@ var demoAnimation = animation().changePosition(ele, positions).repeat();
 * wait(time) //每个动画执行完后等待的时间
 * start(interval) //动画开始执行，interval表示动画执行的间隔
 * pause() //动画暂停
+* restart() //动画从上一次暂停处重新执行
 * dispose() //释放资源
 
 其它就不多说了，看代码吧：）
