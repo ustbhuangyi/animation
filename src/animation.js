@@ -153,7 +153,7 @@ Animation.prototype.start = function (interval) {
 	if (!this.taskQueue.length)
 		return this;
 	this.interval = interval;
-	this._next();
+	this._runTask();
 	return this;
 };
 
@@ -168,21 +168,18 @@ Animation.prototype.repeat = function (times) {
 		if (typeof times === 'undefined') {
 			//无限回退到上一个任务
 			me.index--;
-			me._next();
+			me._runTask();
 			return;
 		}
 		if (times) {
 			times--;
 			//回退到上一个任务
 			me.index--;
-			me._next();
+			me._runTask();
 		} else {
 			//达到重复执行次数，则跳转到下一个任务
 			var task = me.taskQueue[me.index];
-			me.index++;
-			task.wait ? setTimeout(function () {
-				me._next();
-			}, task.wait) : me._next();
+			me._next(task);
 		}
 	};
 	var type = TASK_SYNC;
@@ -262,10 +259,10 @@ Animation.prototype._add = function (taskFn, type) {
 };
 
 /**
- * 执行下一个任务
+ * 执行任务
  * @private
  */
-Animation.prototype._next = function () {
+Animation.prototype._runTask = function () {
 	if (!this.taskQueue || this.state !== STATE_START)
 		return;
 	//如果任务链任务执行完则释放资源
@@ -290,11 +287,8 @@ Animation.prototype._next = function () {
 Animation.prototype._syncTask = function (task) {
 	var me = this;
 	var next = function () {
-		//切换到下一个任务，如果当前任务需要等待，则延时执行
-		me.index++;
-		task.wait ? setTimeout(function () {
-			me._next();
-		}, task.wait) : me._next();
+		//切换到下一个任务
+		me._next(task);
 	};
 	var taskFn = task.taskFn;
 	taskFn(next);
@@ -313,17 +307,27 @@ Animation.prototype._asyncTask = function (task) {
 		var next = function () {
 			//停止执行当前任务
 			me.timeline.stop();
-			//切换到下一个任务，如果当前任务需要等待，则延时执行
-			me.index++;
-			task.wait ? setTimeout(function () {
-				me._next();
-			}, task.wait) : me._next();
+			//执行下一个任务
+			me._next(task);
 		};
 		taskFn(next, time);
 	};
 
 	this.timeline.onenterframe = enterframe;
 	this.timeline.start(this.interval);
+};
+
+/**
+ * 切换到下一个任务，如果当前任务需要等待，则延时执行
+ * @param task
+ * @private
+ */
+Animation.prototype._next = function (task) {
+	var me = this;
+	this.index++;
+	task.wait ? setTimeout(function () {
+		me._runTask();
+	}, task.wait) : this._runTask();
 };
 
 module.exports = function () {
