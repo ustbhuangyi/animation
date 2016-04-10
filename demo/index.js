@@ -37,19 +37,20 @@ function repeat() {
 }
 
 function run() {
-	var interval = 50,
-		speed = 6,
-		left, position,
-		initLeft = 100,
-		finalLeft = 400,
-		frame = 4,
-		frameLength = 6,
-		right = true;
+	var interval = 50;
+	var speed = 6;
+	var initLeft = 100;
+	var finalLeft = 400;
+	var frame = 4;
+	var frameLength = 6;
+	var right = true;
 
 	var runAnimation = animation().loadImage(images).enterFrame(function (success, time) {
 		var ratio = (time) / interval;
+		var position;
+		var left;
 		if (right) {
-			position = rightRunningMap[frame].split(" ");
+			position = rightRunningMap[frame].split(' ');
 			left = Math.min(initLeft + speed * ratio, finalLeft);
 			if (left == finalLeft) {
 				right = false;
@@ -58,7 +59,7 @@ function run() {
 				return;
 			}
 		} else {
-			position = leftRunningMap[frame].split(" ");
+			position = leftRunningMap[frame].split(' ');
 			left = Math.max(finalLeft - speed * ratio, initLeft);
 			if (left == initLeft) {
 				right = true;
@@ -70,17 +71,17 @@ function run() {
 		if (++frame == frameLength) {
 			frame = 0;
 		}
-		$rabbit2.style.backgroundPosition = position[0] + "px " + position[1] + "px";
-		$rabbit2.style.left = left + "px";
+		$rabbit2.style.backgroundPosition = position[0] + 'px ' + position[1] + 'px';
+		$rabbit2.style.left = left + 'px';
 	}).repeat(1).wait(1000).changePosition($rabbit2, rabbitWinMap, images[2]).then(function () {
-		console.log("finish");
+		console.log('finish');
 	});
 	runAnimation.start(interval);
 }
 
 function win() {
 	var winAnimation = animation().loadImage(images).changePosition($rabbit3, rabbitWinMap).repeat(3).then(function () {
-		console.log("win animation repeat 3 times and finished");
+		console.log('win animation repeat 3 times and finished');
 		winAnimation.dispose();
 	});
 	winAnimation.start(200);
@@ -88,7 +89,7 @@ function win() {
 
 function lose() {
 	var loseAnimation = animation().loadImage(images).changePosition($rabbit4, rabbitLoseMap).then(function () {
-		console.log("lose animation finished");
+		console.log('lose animation finished');
 		loseAnimation.dispose();
 	});
 	loseAnimation.start(200);

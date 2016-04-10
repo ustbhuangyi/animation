@@ -34,7 +34,7 @@ function loadImage(images, callback, timeout) {
 		//期望格式是个object： {src:xxx}
 		var item = images[key];
 
-		// 如果item是个字符传，则构造object
+		// 如果item是个字符串，则构造object
 		if (typeof item === 'string') {
 			item = images[key] = {
 				src: item

@@ -43,7 +43,6 @@ Animation.prototype.loadImage = function (imglist) {
 
 	var taskFn = function (next) {
 		loadImage(imglist.slice(), next);
-		imglist = null;
 	};
 	var type = TASK_SYNC;
 
@@ -148,10 +147,11 @@ Animation.prototype.start = function (interval) {
 	//如果任务已经开始，则返回
 	if (this.state === STATE_START)
 		return this;
-	this.state = STATE_START;
 	//如果任务链中没有任务，则返回
 	if (!this.taskQueue.length)
 		return this;
+	this.state = STATE_START;
+
 	this.interval = interval;
 	this._runTask();
 	return this;
@@ -195,8 +195,8 @@ Animation.prototype.repeatForever = function () {
 };
 
 /**
- * 设置当前任务结束后的等待时间
- * @param time
+ * 设置当前任务结束后下一个任务开始前的等待时间
+ * @param time 等待的时长
  */
 Animation.prototype.wait = function (time) {
 	if (this.taskQueue && this.taskQueue.length > 0) {
@@ -319,7 +319,7 @@ Animation.prototype._asyncTask = function (task) {
 
 /**
  * 切换到下一个任务，如果当前任务需要等待，则延时执行
- * @param task
+ * @param task 下一个任务
  * @private
  */
 Animation.prototype._next = function (task) {

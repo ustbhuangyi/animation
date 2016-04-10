@@ -2,9 +2,12 @@
 
 var DEFAULT_INTERVAL = 1000 / 60;
 
+//初始化状态
 var STATE_INITIAL = 0;
-var STATE_STOP = 1;
-var STATE_START = 2;
+//开始状态
+var STATE_START = 1;
+//停止状态
+var STATE_STOP = 2;
 
 /**
  * Timline时间轴类
@@ -45,8 +48,8 @@ Timeline.prototype.restart = function () {
 		return;
 
 	this.state = STATE_START;
-	//重新开始动画的启示时间戳需要前移到上一次动画停止时候的时间戳
-	//这样就可以无缝连接停止动画的状态
+
+	//无缝连接停止动画的状态
 	startTimeline(this, +new Date() - this.dur);
 };
 
