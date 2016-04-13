@@ -1,47 +1,23 @@
-.rabbit
-{
-    position:absolute;
-    height:80px;
-    width:102px;
-    background:url(./rabbit-big.png) no-repeat;
-    left:100px;
+.rabbit {
+    position: absolute;
+    left: 100px;
+    width: 102px;
+    height: 80px;
+    background-repeat: no-repeat;
 }
 
-.rabbitlose
-{
-    position:absolute;
-    width:100px;
-    height:86px;
-    background:url(./rabbit-lose.png) no-repeat;
-    left:100px;
+#rabbit1 {
+    top: 50px
 }
 
-.rabbitwin
-{
-    position:absolute;
-    width:100px;
-    height:80px;
-    background:url(./rabbit-win.png) no-repeat;
-    left:100px;
+#rabbit2 {
+    top: 200px
 }
 
-
-#rabbit1
-{
-    top:50px;
+#rabbit3 {
+    top: 350px
 }
 
-#rabbit2
-{
-    top:200px;
-}
-
-#rabbit3
-{
-    top:350px;
-}
-
-#rabbit4
-{
-    top:500px;
+#rabbit4 {
+    top: 500px
 }
