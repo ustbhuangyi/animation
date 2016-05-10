@@ -1,7 +1,7 @@
 animation
 =========
 
-[例子在这里](http://ustbhuangyi.github.io/animation/demo.html)
+[例子在这里](http://ustbhuangyi.github.io/animation/demo/)
 
 通常我们会遇到一些需求，用js实现一组动画（这里指的是由一帧帧图片组合而成的动画，非jq的animate）。
 
