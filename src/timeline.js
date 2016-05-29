@@ -1,5 +1,6 @@
 'use strict';
 
+//默认间隔时间
 var DEFAULT_INTERVAL = 1000 / 60;
 
 //初始化状态
