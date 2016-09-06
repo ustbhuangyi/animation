@@ -157,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				//获得当前的图片索引
 				var index = Math.min(time / me.interval | 0, len - 1);
 				//改变image对象的图片地址
-				ele.src = imglist[src];
+				ele.src = imglist[index];
 				//当前任务执行完毕
 				if (index === len - 1) {
 					next();
