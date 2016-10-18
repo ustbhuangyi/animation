@@ -8,15 +8,19 @@ module.exports = {
 	},
 	output: {
 		path: __dirname + '/build',
-		filename: '[name].js',
+		filename: '[name].min.js',
 		library: 'animation',
-		libraryTarget: 'umd',
-		publicPath: '/assets/'
+		libraryTarget: 'umd'
 	},
 	resolveLoader: {
 		root: path.join(__dirname, 'node_modules')
 	},
 	plugins: [
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false
+			}
+		}),
 		new webpack.DefinePlugin({
 			__VERSION__: JSON.stringify(version)
 		})
