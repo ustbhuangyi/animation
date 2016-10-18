@@ -1,6 +1,8 @@
 animation
 =========
 
+[![npm](https://img.shields.io/npm/v/frame-animation.svg?style=flat-square)](https://www.npmjs.com/package/frame-animation)
+
 [例子在这里](http://ustbhuangyi.github.io/animation/demo/)
 
 通常我们会遇到一些需求，用js实现一组动画（这里指的是由一帧帧图片组合而成的动画，非jq的animate）。
@@ -9,7 +11,15 @@ animation
 
 有了上述需求，我觉得写一个通用的animation库还是很有必要的，这样用户就每必要为每一组动画写逻辑了，从繁琐的劳动中解放，不正是每个coder所期望的么：）
 
-废话不多说，我们先看一下animation接口的调用demo，支持链式调用。
+## Usage
+
+npm 安装
+
+```
+$ npm install frame-animation
+```
+
+使用方法
 
 ``` javascript
 var animation = require("animation");
