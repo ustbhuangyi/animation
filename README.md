@@ -35,6 +35,24 @@ var demoAnimation = animation().changePosition(ele, positions).repeat();
 * restart() //动画从上一次暂停处重新执行
 * dispose() //释放资源
 
-其它就不多说了，看代码吧：）
+## 如何构建
+animation的源码是基于webpack构建的
 
-remind:animation.js依赖timeline.js和imageloader.js
+首先，clone项目源码
+```bash
+git clone https://github.com/ustbhuangyi/animation.git
+```
+
+安装依赖
+```bash
+cd animation
+npm install
+```
+测试demo页
+
+```bash
+npm run dev
+```
+打开浏览器访问如下地址, 查看效果
+
+> localhost:9090
