@@ -1,5 +1,5 @@
 {
-  "name": "animation",
+  "name": "frame-animation",
   "version": "0.2.1",
   "description": "a common animation lib",
   "scripts": {
@@ -13,7 +13,9 @@
   },
   "keywords": [
     "common",
-    "animation"
+    "frame",
+    "animation",
+    "h5"
   ],
   "author": "ustbhuangyi",
   "license": "MIT",
