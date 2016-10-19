@@ -22,7 +22,7 @@ $ npm install frame-animation
 使用方法
 
 ``` javascript
-var animation = require("animation");
+var animation = require("frame-animation");
     
 var demoAnimation = animation().changePosition(ele, positions).repeat();
     demoAnimation.start(200);
