@@ -1,6 +1,6 @@
 {
   "name": "frame-animation",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "a common animation lib",
   "scripts": {
     "dev": "webpack-dev-server --port 9090 --inline --hot --content-base ./demo --host 0.0.0.0",
