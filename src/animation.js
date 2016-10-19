@@ -131,7 +131,7 @@ Animation.prototype.enterFrame = function (taskFn) {
  */
 Animation.prototype.then = function (callback) {
 	var taskFn = function (next) {
-		callback();
+		callback(this);
 		next();
 	};
 	var type = TASK_SYNC;
