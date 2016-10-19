@@ -13,16 +13,37 @@ animation
 
 ## Usage
 
-npm 安装
+### npm 安装
 
 ```
 $ npm install frame-animation
 ```
 
-使用方法
+### 示例
+
+#### HTML
+
+```html
+<div id="demo"></div>
+```
+
+#### CSS
+
+```css
+#demo {
+    width: 100px;
+    height: 100px;
+    background: url('foo.png');
+}
+```
+
+#### JavaScript
 
 ``` javascript
 var animation = require("frame-animation");
+
+var ele = document.getElementById('demo');
+var frameMap = ['0 0', '0 -100', '0 -200'];
     
 var demoAnimation = animation().changePosition(ele, positions).repeat();
     demoAnimation.start(200);
