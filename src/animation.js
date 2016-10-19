@@ -83,7 +83,6 @@ Animation.prototype.changePosition = function (ele, positions, imageUrl) {
 	}
 
 	return this._add(taskFn, type);
-
 };
 
 /**
@@ -330,7 +329,12 @@ Animation.prototype._next = function (task) {
 	}, task.wait) : this._runTask();
 };
 
-module.exports = function () {
+
+function createAnimation() {
 	return new Animation();
-};
+}
+
+createAnimation.version = __VERSION__;
+
+module.exports = createAnimation;
 
