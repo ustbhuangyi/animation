@@ -67,12 +67,12 @@ Animation.prototype.changePosition = function (ele, positions, imageUrl) {
 				ele.style.backgroundImage = 'url(' + imageUrl + ')';
 			}
 			//获得当前背景图片位置索引
-			var index = Math.min(time / me.interval | 0, len - 1);
-			var position = positions[index].split(' ');
+			var index = Math.min(time / me.interval | 0, len);
+			var position = positions[index - 1].split(' ');
 			//改变dom对象的背景图片位置
 			ele.style.backgroundPosition = position[0] + 'px ' + position[1] + 'px';
 			//当前任务执行完毕
-			if (index === len - 1) {
+			if (index === len) {
 				next();
 			}
 		};
@@ -98,11 +98,11 @@ Animation.prototype.changeSrc = function (ele, imglist) {
 		var me = this;
 		taskFn = function (next, time) {
 			//获得当前的图片索引
-			var index = Math.min(time / me.interval | 0, len - 1);
+			var index = Math.min(time / me.interval | 0, len);
 			//改变image对象的图片地址
-			ele.src = imglist[index];
+			ele.src = imglist[index - 1];
 			//当前任务执行完毕
-			if (index === len - 1) {
+			if (index === len) {
 				next();
 			}
 		};
