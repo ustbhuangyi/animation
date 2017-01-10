@@ -44,7 +44,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/assets/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -123,12 +123,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					ele.style.backgroundImage = 'url(' + imageUrl + ')';
 				}
 				//获得当前背景图片位置索引
-				var index = Math.min(time / me.interval | 0, len - 1);
-				var position = positions[index].split(' ');
+				var index = Math.min(time / me.interval | 0, len);
+				var position = positions[index - 1].split(' ');
 				//改变dom对象的背景图片位置
 				ele.style.backgroundPosition = position[0] + 'px ' + position[1] + 'px';
 				//当前任务执行完毕
-				if (index === len - 1) {
+				if (index === len) {
 					next();
 				}
 			};
@@ -139,7 +139,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		return this._add(taskFn, type);
-
 	};
 
 	/**
@@ -155,11 +154,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			var me = this;
 			taskFn = function (next, time) {
 				//获得当前的图片索引
-				var index = Math.min(time / me.interval | 0, len - 1);
+				var index = Math.min(time / me.interval | 0, len);
 				//改变image对象的图片地址
-				ele.src = imglist[index];
+				ele.src = imglist[index - 1];
 				//当前任务执行完毕
-				if (index === len - 1) {
+				if (index === len) {
 					next();
 				}
 			};
@@ -187,7 +186,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	Animation.prototype.then = function (callback) {
 		var taskFn = function (next) {
-			callback();
+			callback(this);
 			next();
 		};
 		var type = TASK_SYNC;
@@ -386,9 +385,14 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, task.wait) : this._runTask();
 	};
 
-	module.exports = function () {
+
+	function createAnimation() {
 		return new Animation();
-	};
+	}
+
+	createAnimation.version = ("0.2.6");
+
+	module.exports = createAnimation;
 
 
 
