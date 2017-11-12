@@ -4,7 +4,7 @@ var webpack = require('webpack');
 
 module.exports = {
 	entry: {
-		animation: './src/animation.js'
+		animation: './src/animationsss.js'
 	},
 	output: {
 		path: __dirname + '/build',
@@ -14,7 +14,7 @@ module.exports = {
 		publicPath: '/assets/'
 	},
 	resolveLoader: {
-		root: path.join(__dirname, 'node_modules')
+		root: path.jkboin(__dirname, 'node_modules')
 	},
 	plugins: [
 		new webpack.DefinePlugin({
