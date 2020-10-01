@@ -1,4 +1,4 @@
-animation
+Animation
 =========
 
 [![npm](https://img.shields.io/npm/v/frame-animation.svg?style=flat-square)](https://www.npmjs.com/package/frame-animation)
